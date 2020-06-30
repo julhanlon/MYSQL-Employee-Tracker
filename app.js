@@ -61,7 +61,14 @@ function start() {
 //             name: "addEmployee",
 //         },
     ]).then((res) => {
-        switch (res.choice) {      
+        switch (res.choice) {    
+            case "View all employees":  
+            connection.query("SELECT * FROM employee", (err, results) => {
+                console.log(results);
+                console.table(results);
+                start();
+            }) 
+                break;  
                 case "View all departments":  
             connection.query("SELECT * FROM department", (err, results) => {
                 console.log(results);
@@ -69,6 +76,12 @@ function start() {
                 start();
             }) 
                 break;
+                case "View all roles":  
+                connection.query("SELECT * FROM role", (err, results) => {
+                    console.log(results);
+                    console.table(results);
+                    start();
+                }) 
             case "Add a department":  
             inquirer.prompt([
                 {type: "input",
