@@ -82,6 +82,7 @@ function start() {
                     console.table(results);
                     start();
                 }) 
+                break;
             case "Add an employee":  
             inquirer.prompt([
                 {type: "input",
