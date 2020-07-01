@@ -82,19 +82,49 @@ function start() {
                     console.table(results);
                     start();
                 }) 
-            case "Add a department":  
+            case "Add an employee":  
             inquirer.prompt([
                 {type: "input",
-                name: "departName",
-                message: "Enter a new department"
+                name: "firstName",
+                message: "Enter employee's first name",
                 },
-            ]).then(({departName}) => {
-                connection.query("INSERT INTO department SET ?",[{name: departName}], (err, results) => {
+                {type: "input",
+                name: "lastName",
+                message: "Enter employee's last name",
+                },
+            ]).then(({firstName, lastName}) => {
+                connection.query("INSERT INTO employee SET ?",[{first_name: firstName, last_name: lastName}], (err, results) => {
                     console.log(results);
                     start();
             })                     
             });
                 break;
+                case "Add a department":  
+                inquirer.prompt([
+                    {type: "input",
+                    name: "departName",
+                    message: "Enter a new department"
+                    },
+                ]).then(({departName}) => {
+                    connection.query("INSERT INTO department SET ?",[{name: departName}], (err, results) => {
+                        console.log(results);
+                        start();
+                })                     
+                });
+                    break;
+                    case "Add a role":  
+                    inquirer.prompt([
+                        {type: "input",
+                        name: "newRole",
+                        message: "Enter a new role",
+                        },
+                    ]).then(({newRole}) => {
+                        connection.query("INSERT INTO role SET ?",[{role: newRole}], (err, results) => {
+                            console.log(results);
+                            start();
+                    })                     
+                    });
+                        break;
             default:                      
                 connection.end();
                 console.log("End");
