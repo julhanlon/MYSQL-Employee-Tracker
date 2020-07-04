@@ -93,6 +93,14 @@ function start() {
                 name: "lastName",
                 message: "Enter employee's last name",
                 },
+                {type: "input",
+                name: "role",
+                message: "Enter employee's role",
+                }, 
+                {type: "input",
+                name: "managerId",
+                message: "Enter employee's manager",
+                },
             ]).then(({firstName, lastName}) => {
                 connection.query("INSERT INTO employee SET ?",[{first_name: firstName, last_name: lastName}], (err, results) => {
                     console.log(results);
