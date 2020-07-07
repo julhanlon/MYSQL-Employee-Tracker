@@ -49,29 +49,7 @@ function start() {
                 }) 
                 break;
             case "Add an employee":  
-            inquirer.prompt([
-                {type: "input",
-                name: "firstName",
-                message: "Enter employee's first name",
-                },
-                {type: "input",
-                name: "lastName",
-                message: "Enter employee's last name",
-                },
-                {type: "input",
-                name: "employeeRole",
-                message: "Enter employee's role",
-                }, 
-                {type: "input",
-                name: "managerId",
-                message: "Enter employee's manager ID",
-                },
-            ]).then(({firstName, lastName}) => {
-                connection.query("INSERT INTO employee SET ?",[{first_name: firstName, last_name: lastName, role: employeeRole, manager_Id: managerId}], (err, results) => {
-                    console.log(results);
-                    start();
-            })                     
-            });
+                newEmployee();
                 break;
                 case "Update employee":  
                 inquirer.prompt([
@@ -116,10 +94,65 @@ function start() {
                     })                     
                     });
                         break;
-            default:                      
+                default:                      
                 connection.end();
                 console.log("End");
         } 
 
     }).catch((err) => console.log(err))
+}
+
+const newEmployee = () => {
+    try {
+        inquirer.prompt([
+            {
+                name: "first_name",
+                message: "Enter employee's first name",
+                type: "input",
+            },
+            {
+                name: "last_name",
+                message: "Enter employee's last name",
+                type: "input",
+            },
+            {
+                name: "employeeRole",
+                message: "Enter employee's role",
+                type: "input",
+            },
+            {
+                name: "managerId",
+                message: "Enter employee's Manager",
+                type: "input",
+            }
+        ]).then((res) => {
+
+            const first_name = res.first_name;
+            const last_name = res.last_name;
+            const role_id = res.employeeRole;
+            const manager_id = res.managerId;
+
+            const newEmployee = { first_name, last_name, role_id, manager_id }
+        
+         addEmployee(newEmployee);
+         start();
+        })
+    } catch (err) {
+        console.log(err);
+
+    }
+}
+
+const addEmployee = (anotherEmployee) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`INSERT INTO employee SET ?`, [anotherEmployee], (err) => {
+                if (err) { reject(err);
+                } else {
+                    console.log("New employee added")
+                          };
+            });
+            connection.query("SELECT * FROM employee", (err, results) => {
+                console.table(results);
+            });
+    });
 }
