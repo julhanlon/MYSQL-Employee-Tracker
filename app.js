@@ -26,27 +26,24 @@ function start() {
         type: 'list',
         name: "choice",
         message: 'What would you like to do?',
-        choices: [ "View all employees","View all departments", "View all roles", "Add an employee","Add a department","Add a Role", "Update employee" "Exit"],
+        choices: [ "View all employees","View all departments", "View all roles", "Add an employee","Add a department","Add a role", "Update employee", "Exit"],
 },
     ]).then((res) => {
         switch (res.choice) {    
             case "View all employees":  
             connection.query("SELECT * FROM employee", (err, results) => {
-                console.log(results);
                 console.table(results);
                 start();
             }) 
                 break;  
                 case "View all departments":  
             connection.query("SELECT * FROM department", (err, results) => {
-                console.log(results);
                 console.table(results);
                 start();
             }) 
                 break;
                 case "View all roles":  
                 connection.query("SELECT * FROM role", (err, results) => {
-                    console.log(results);
                     console.table(results);
                     start();
                 }) 
@@ -62,15 +59,15 @@ function start() {
                 message: "Enter employee's last name",
                 },
                 {type: "input",
-                name: "role",
+                name: "employeeRole",
                 message: "Enter employee's role",
                 }, 
                 {type: "input",
                 name: "managerId",
-                message: "Enter employee's manager",
+                message: "Enter employee's manager ID",
                 },
             ]).then(({firstName, lastName}) => {
-                connection.query("INSERT INTO employee SET ?",[{first_name: firstName, last_name: lastName}], (err, results) => {
+                connection.query("INSERT INTO employee SET ?",[{first_name: firstName, last_name: lastName, role: employeeRole, manager_Id: managerId}], (err, results) => {
                     console.log(results);
                     start();
             })                     
@@ -87,7 +84,7 @@ function start() {
                     message: "Enter employee's role",
                     },
                 ]).then(({employeeId, newRole}) => {
-                    connection.query("UPDATE employee SET ? WHERE ?",[{id: employeeId, role: newRole}], (err, results) => {
+                    connection.query("UPDATE employee SET ? WHERE ?",[{role: newRole}, {id: employeeId}], (err, results) => {
                         console.log(results);
                         start();
                 })                     
