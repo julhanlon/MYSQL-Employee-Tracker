@@ -22,44 +22,12 @@ connection.connect(function(err) {
 function start() {
     inquirer
     .prompt([
-    //     {
-    //         type: 'input',
-    //         name: "name",
-    //         message: 'Enter employee name',
-    // },
-// {
-//         type: "input",
-//         name: "email",
-//         message: "Enter employees email",
-//     },
-//     {
-//         type: "input",
-//         name: "id",
-//         message: "Enter employee ID number",
-//     },
     {
         type: 'list',
         name: "choice",
         message: 'What would you like to do?',
-        choices: [ "View all employees","View all departments", "View all roles", "Add an employee","Add a department","Add a Role", "Exit"],
+        choices: [ "View all employees","View all departments", "View all roles", "Add an employee","Add a department","Add a Role", "Update employee" "Exit"],
 },
-//         {
-//             type: "input",
-//             name: "portfolio",
-//             message: "Enter their portfolio address",
-//             when: (answers) => answers.role === "Architect",
-//         },
-//         {
-//             type: "input",
-//             name: "school",
-//             message: "Enter their school",
-//             when: (answers) => answers.role === "Intern",
-//         },
-//         {
-//             type: "confirm",
-//             message: "Would you like to add another employee?",
-//             name: "addEmployee",
-//         },
     ]).then((res) => {
         switch (res.choice) {    
             case "View all employees":  
@@ -108,6 +76,23 @@ function start() {
             })                     
             });
                 break;
+                case "Update employee":  
+                inquirer.prompt([
+                    {type: "input",
+                    name: "employeeId",
+                    message: "Enter employee's id number",
+                    },
+                    {type: "input",
+                    name: "newRole",
+                    message: "Enter employee's role",
+                    },
+                ]).then(({employeeId, newRole}) => {
+                    connection.query("UPDATE employee SET ? WHERE ?",[{id: employeeId, role: newRole}], (err, results) => {
+                        console.log(results);
+                        start();
+                })                     
+                });
+                    break;
                 case "Add a department":  
                 inquirer.prompt([
                     {type: "input",
