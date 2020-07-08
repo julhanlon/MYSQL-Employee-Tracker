@@ -51,20 +51,30 @@ function start() {
             case "Add an employee":  
                 newEmployee();
                 break;
-                case "Update employee":  
+                case "Update employee": 
+                connection.query("SELECT * FROM role", (err, roleResults) => {
+                    connection.query("SELECT * FROM employee", (err, employeeResults) => {
+                        console.table(employeeResults); 
                 inquirer.prompt([
                     {type: "input",
                     name: "employeeId",
                     message: "Enter employee's id number",
                     },
-                    {type: "input",
+                    {
                     name: "newRole",
-                    message: "Enter employee's role",
+                    message: "choose a role",
+                    type: "list",
+                    choices: roleResults.map((roleRow) => {
+                        return {name: roleRow.title, value: roleRow.id}
+                    })  
                     },
                 ]).then(({employeeId, newRole}) => {
-                    connection.query("UPDATE employee SET ? WHERE ?",[{role: newRole}, {id: employeeId}], (err, results) => {
-                        console.log(results);
+                    connection.query("UPDATE employee SET ? WHERE ?",[{role_id: newRole}, {id: employeeId}], (err, results) => {
+                        if (err) throw (err);
+                        console.log("updated");
                         start();
+                    })  
+                    })    
                 })                     
                 });
                     break;
@@ -112,6 +122,9 @@ function start() {
 
 const newEmployee = () => {
     try {
+        connection.query("SELECT * FROM role", (err, roleResults) => {
+            connection.query("SELECT * FROM employee", (err, employeeResults) => {
+                console.table(employeeResults);
         inquirer.prompt([
             {
                 name: "first_name",
@@ -126,12 +139,18 @@ const newEmployee = () => {
             {
                 name: "employeeRole",
                 message: "Enter employee's role",
-                type: "input",
+                type: "list",
+                choices: roleResults.map((roleRow) => {
+                    return {name: roleRow.title, value: roleRow.id}
+                })                    
             },
             {
                 name: "managerId",
                 message: "Enter employee's Manager",
-                type: "input",
+                type: "list",
+                choices: employeeResults.map((employRow) => {
+                    return {name: `${employRow.first_name} ${employRow.last_name}`, value: employRow.id}
+                })  
             }
         ]).then((res) => {
 
@@ -144,7 +163,9 @@ const newEmployee = () => {
         
          addEmployee(newEmployee);
          start();
-        })
+        });
+    });
+    });
     } catch (err) {
         console.log(err);
 
