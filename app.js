@@ -87,8 +87,16 @@ function start() {
                         name: "newRole",
                         message: "Enter a new role",
                         },
+                        {type: "input",
+                        name: "newSalary",
+                        message: "Enter salary for role",
+                        },
+                        {type: "input",
+                        name: "departmentId",
+                        message: "Enter department for the role",
+                        },
                     ]).then(({newRole}) => {
-                        connection.query("INSERT INTO role SET ?",[{role: newRole}], (err, results) => {
+                        connection.query("INSERT INTO role SET ?",[{title: newRole, salary: newSalary, department_id: departmentId}], (err, results) => {
                             console.log(results);
                             start();
                     })                     
@@ -149,7 +157,7 @@ const addEmployee = (anotherEmployee) => {
                 if (err) { reject(err);
                 } else {
                     console.log("New employee added")
-                          };
+                };
             });
             connection.query("SELECT * FROM employee", (err, results) => {
                 console.table(results);
