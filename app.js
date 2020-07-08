@@ -56,9 +56,13 @@ function start() {
                     connection.query("SELECT * FROM employee", (err, employeeResults) => {
                         console.table(employeeResults); 
                 inquirer.prompt([
-                    {type: "input",
+                    {
                     name: "employeeId",
                     message: "Enter employee's id number",
+                    type: "list",
+                    choices: employeeResults.map((employRow) => {
+                        return {name: `${employRow.first_name} ${employRow.last_name}`, value: employRow.id}
+                    })  
                     },
                     {
                     name: "newRole",
