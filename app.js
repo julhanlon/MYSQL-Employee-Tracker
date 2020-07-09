@@ -51,6 +51,7 @@ function start() {
             case "Add an employee":  
                 newEmployee();
                 break;
+                // update an employee
                 case "Update employee": 
                 connection.query("SELECT * FROM role", (err, roleResults) => {
                     connection.query("SELECT * FROM employee", (err, employeeResults) => {

@@ -32,12 +32,29 @@ VALUES ("design");
 INSERT INTO department(name)
 VALUES ("engineering");
 
-INSERT INTO employee(first_name, last_name)
-VALUES ("Jane", "Doe");
+INSERT INTO department(name)
+VALUES ("HR");
+
+INSERT INTO employee(first_name, last_name, role_id)
+VALUES ("Jane", "Smith", 1);
+
+INSERT INTO employee(first_name, last_name, role_id)
+VALUES ("Christina", "Salehi", 1);
+
+INSERT INTO employee(first_name, last_name, role_id)
+VALUES ("Sandeep", "Vandel", 2);
 
 INSERT INTO role(title, salary, department_id)
 VALUES ("engineer", 120000.00, 2);
 
+INSERT INTO role(title, salary, department_id)
+VALUES ("architect", 100000.00, 1);
+
+INSERT INTO role(title, salary, department_id)
+VALUES ("human resources", 100000.00, 3);
+
+INSERT INTO role(title, salary, department_id)
+VALUES ("interior designer", 90000.00, 1);
 
 -- view all departments
 SELECT * FROM department;
